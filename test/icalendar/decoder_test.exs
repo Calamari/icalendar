@@ -59,6 +59,18 @@ defmodule ICalendar.ParserTest do
            }
   end
 
+  test "can parse gmail description" do
+    stream = File.read!("test/fixtures/gmail_description.ics")
+    {:ok, res} = Decoder.from_ics(stream)
+
+    res.event |> IO.inspect()
+
+    assert String.contains?(
+             elem(res.event.description, 0),
+             "Please do not edit this section of the description."
+           )
+  end
+
   test "nested" do
     stream = File.read!("test/fixtures/vcalendar.ics")
     {:ok, res} = Decoder.from_ics(stream)

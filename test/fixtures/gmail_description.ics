@@ -1,0 +1,31 @@
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VEVENT
+DTSTART:20181225T170000Z
+DTEND:20181225T173000Z
+DTSTAMP:20181215T152331Z
+ORGANIZER;CN=Georg Tavonius:mailto:g.tavonius@gmail.com
+UID:7od8nl2bsv6am99jes052c9iug@google.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE
+ ;CN=Georg Tavonius;X-NUM-GUESTS=0:mailto:g.tavonius@gmail.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=
+ TRUE;CN=georg@get83.de;X-NUM-GUESTS=0:mailto:georg@get83.de
+CREATED:20181215T152328Z
+DESCRIPTION:-::~:~::~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~
+ :~:~:~:~:~:~:~:~::~:~::-\nPlease do not edit this section of the descriptio
+ n.\n\nView your event at https://www.google.com/calendar/event?action=VIEW&
+ eid=N29kOG5sMmJzdjZhbTk5amVzMDUyYzlpdWcgZ2VvcmdAZ2V0ODMuZGU&tok=MjAjZy50YXZ
+ vbml1c0BnbWFpbC5jb20wNWZiMmVlODg5NDgzZmU5NjI3N2FiMDk0NjUxNWJhNzg1NDEzMzU1&c
+ tz=Europe%2FBerlin&hl=en&es=1.\n-::~:~::~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~
+ :~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~:~::~:~::-
+LAST-MODIFIED:20181215T152329Z
+LOCATION:
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:XMas 2
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
