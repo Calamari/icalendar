@@ -22,7 +22,7 @@ RDATE;VALUE=PERIOD:19960403T020000Z/19960403T040000Z,
 END:VEVENT
 """
 
-{:ok, event} = ICalendar.decode(string)
+{:ok, event} = ICalendar.from_ics(string)
 
 # event
 %{
@@ -52,7 +52,7 @@ END:VEVENT
   uid: {"00U5E000001JfN7UAK", %{}, :text}
 }
 
-ICalendar.encode(event)
+ICalendar.to_ics(event)
 ```
 
 ## Is it fast?

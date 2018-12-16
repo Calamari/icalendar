@@ -2,7 +2,7 @@ defmodule ICalendar.Decoder do
   alias ICalendar.RFC6868
   import ICalendar, only: [__props__: 1]
 
-  def decode(string) do
+  def from_ics(string) do
     string
     # unfold
     |> String.replace(~r/\r?\n[ \t]/, "")
@@ -24,11 +24,13 @@ defmodule ICalendar.Decoder do
   }
 
   defp to_key(string) when is_atom(string), do: string
+
   defp to_key(string) do
     string
     |> String.replace("-", "_")
-    |> String.downcase
-    |> String.to_atom
+    |> String.downcase()
+    |> String.to_atom()
+
     # TODO limit to_atom to @properties + @parameters
   end
 
@@ -46,6 +48,7 @@ defmodule ICalendar.Decoder do
     acc = list_put(acc, @types[type], obj)
     parse(rest, [acc | stack])
   end
+
   # outermost component
   defp parse(["END:" <> type | rest], [obj]), do: parse(rest, obj)
 
@@ -54,6 +57,7 @@ defmodule ICalendar.Decoder do
       {:ok, {key, prop}} ->
         obj = list_put(obj, key, prop)
         parse(rest, [obj | stack])
+
       {:error, reason} ->
         {:error, {reason, line}}
     end
@@ -62,7 +66,7 @@ defmodule ICalendar.Decoder do
   defp list_put(map, key, item) do
     list = Map.get(map, key)
     # if the key exists, make it an array
-    item = (if list, do: [item | List.wrap(list)], else: item)
+    item = if list, do: [item | List.wrap(list)], else: item
     Map.put(map, key, item)
   end
 
@@ -94,17 +98,21 @@ defmodule ICalendar.Decoder do
   defp find_valpos(<<?", rest::binary>>, %{inside_quote: false} = state) do
     find_valpos(rest, %{state | pos: state.pos + 1, inside_quote: true})
   end
+
   # end of a quote
   defp find_valpos(<<?", rest::binary>>, %{inside_quote: true} = state) do
     find_valpos(rest, %{state | pos: state.pos + 1, inside_quote: false})
   end
+
   # if we find the separator, and not inside quotes, take it
   defp find_valpos(<<?:, _rest::binary>>, %{inside_quote: inside} = state) when inside == false do
     {:ok, state.pos}
   end
+
   defp find_valpos(<<_::1-bytes, rest::binary>>, state) do
     find_valpos(rest, %{state | pos: state.pos + 1})
   end
+
   # error, didn't find separator
   defp find_valpos(<<>>, _state), do: {:error, :invalid_prop}
 
@@ -119,6 +127,7 @@ defmodule ICalendar.Decoder do
         {:ok, val} = parse_val(val, Map.drop(spec, [:multi]), params)
         val
       end)
+
     {:ok, val}
   end
 
@@ -131,6 +140,7 @@ defmodule ICalendar.Decoder do
         val
       end)
       |> List.to_tuple()
+
     {:ok, val}
   end
 
@@ -169,8 +179,9 @@ defmodule ICalendar.Decoder do
 
   def parse_type(val, :duration, _params) do
     val
-    |> String.trim_trailing("T") # for some reason 1PDT is valid
-    |> Timex.Parse.Duration.Parsers.ISO8601Parser.parse
+    # for some reason 1PDT is valid
+    |> String.trim_trailing("T")
+    |> Timex.Parse.Duration.Parsers.ISO8601Parser.parse()
   end
 
   def parse_type(val, :float, _params) do
@@ -188,11 +199,12 @@ defmodule ICalendar.Decoder do
 
     {:ok, from} = parse_type(from, :date_time, %{})
     # to can either be a duration or a date_time
-    {:ok, to} = if String.starts_with?(to, "P") do
-      parse_type(to, :duration, %{})
-    else
-      parse_type(to, :date_time, %{})
-    end
+    {:ok, to} =
+      if String.starts_with?(to, "P") do
+        parse_type(to, :duration, %{})
+      else
+        parse_type(to, :date_time, %{})
+      end
 
     {:ok, %ICalendar.Period{from: from, until: to}}
   end
@@ -232,17 +244,18 @@ defmodule ICalendar.Decoder do
 
     params =
       params
-      |> Enum.reduce(%{}, fn(param, acc) ->
+      |> Enum.reduce(%{}, fn param, acc ->
         [key, val] = String.split(param, "=", parts: 2)
         # trim only leading and trailing double quote
-        Map.merge(acc, %{to_key(key) =>
-          val
-          |> String.trim(~s("))
-          |> RFC6868.unescape()
+        Map.merge(acc, %{
+          to_key(key) =>
+            val
+            |> String.trim(~s("))
+            |> RFC6868.unescape()
         })
       end)
 
-      [key, params]
+    [key, params]
   end
 
   @doc ~S"""
@@ -279,23 +292,27 @@ defmodule ICalendar.Decoder do
     |> to_datetime()
     |> case do
       {:ok, naive_date} ->
-        #{:ok, Timex.to_datetime(naive_date, timezone)}
+        # {:ok, Timex.to_datetime(naive_date, timezone)}
         Calendar.DateTime.from_naive(naive_date, timezone)
-      err -> err
+
+      err ->
+        err
     end
   end
 
   def to_datetime(date_string, %{}) do
     # it's utc
+    # its a relative date, parse as naive datetime
     if String.ends_with?(date_string, "Z") do
       # trim trailing Z?
       case to_datetime(date_string) do
         {:ok, naive_datetime} ->
           DateTime.from_naive(naive_datetime, "Etc/UTC")
+
         err ->
           err
       end
-    else # its a relative date, parse as naive datetime
+    else
       to_datetime(date_string)
     end
   end
@@ -311,7 +328,7 @@ defmodule ICalendar.Decoder do
          {second, ""} <- Integer.parse(sec),
          {:ok, date} <- Date.new(year, month, day),
          {:ok, time} <- Time.new(hour, minute, second) do
-         NaiveDateTime.new(date, time)
+      NaiveDateTime.new(date, time)
     else
       {:error, reason} -> {:error, reason}
       _ -> {:error, :invalid_format}
@@ -323,7 +340,7 @@ defmodule ICalendar.Decoder do
          {year, ""} <- Integer.parse(year),
          {month, ""} <- Integer.parse(month),
          {day, ""} <- Integer.parse(day) do
-         Date.new(year, month, day)
+      Date.new(year, month, day)
     else
       {:error, reason} -> {:error, reason}
       _ -> {:error, :invalid_format}
@@ -340,10 +357,12 @@ defmodule ICalendar.Decoder do
   end
 
   def to_time(time_string, %{}) do
-    if String.ends_with?(time_string, "Z") do # it's utc
+    # it's utc
+    # its a relative date, parse as naive datetime
+    if String.ends_with?(time_string, "Z") do
       {:ok, time} = to_time(time_string)
       %{time | time_zone: "Etc/UTC"}
-    else # its a relative date, parse as naive datetime
+    else
       to_time(time_string)
     end
   end
@@ -353,7 +372,7 @@ defmodule ICalendar.Decoder do
          {hour, ""} <- Integer.parse(hour),
          {minute, ""} <- Integer.parse(min),
          {second, ""} <- Integer.parse(sec) do
-         ICalendar.Time.new(hour, minute, second)
+      ICalendar.Time.new(hour, minute, second)
     else
       {:error, reason} -> {:error, reason}
       _ -> {:error, :invalid_format}
