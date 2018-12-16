@@ -1,6 +1,6 @@
 # ICalendar
 
-Parse and manipulate iCalendar ([RFC5545](https://tools.ietf.org/html/rfc5545)) and vCard objects (RFC6350). Parameter escaping follows ([RFC6868](https://tools.ietf.org/html/rfc6868)).
+Parse and manipulate iCalendar ([RFC5545](https://tools.ietf.org/html/rfc5545)). Parameter escaping follows ([RFC6868](https://tools.ietf.org/html/rfc6868)).
 
 Implementation is feature complete and standards-conformant.
 
@@ -79,10 +79,6 @@ decode        1.67 K - 5.03x slower
 
 - RFC 7265 - jCal
 - RFC 6321 - xCal
-
-- RFC 6350 - vCard (4.0) (todo: vCard 3)
-  - RFC 6351 - xCard
-  - RFC 7095 - jCard
 
 # Special Thanks
 
