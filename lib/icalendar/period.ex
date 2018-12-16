@@ -8,9 +8,9 @@ defmodule ICalendar.Period do
   normalizes the until value into a DateTime, so we lose the original duration.
   """
   @type t :: %__MODULE__{
-    from: NaiveDateTime.t | DateTime.t,
-    until: NaiveDateTime.t | DateTime.t | Timex.Duration.t
-  }
+          from: NaiveDateTime.t() | DateTime.t(),
+          until: NaiveDateTime.t() | DateTime.t() | Timex.Duration.t()
+        }
 
   defstruct from: nil, until: nil
 
@@ -35,7 +35,7 @@ defmodule ICalendar.Period do
   """
   def to_interval(%__MODULE__{from: from, until: %Timex.Duration{} = until}) do
     # Convert until to something Interval can accept if it's a Timex.Duration
-    until = until |> Map.drop([:__struct__]) |> Map.to_list
+    until = until |> Map.drop([:__struct__]) |> Map.to_list()
     Timex.Interval.new(from: from, until: until)
   end
 

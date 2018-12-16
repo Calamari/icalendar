@@ -3,11 +3,11 @@ defmodule ICalendar.Time do
   Represents an iCalendar time.
   """
   @type t :: %__MODULE__{
-    hour: Calendar.hour,
-    minute: Calendar.minute,
-    second: Calendar.second,
-    time_zone: Calendar.time_zone()
-  }
+          hour: Calendar.hour(),
+          minute: Calendar.minute(),
+          second: Calendar.second(),
+          time_zone: Calendar.time_zone()
+        }
 
   defstruct [:hour, :minute, :second, :time_zone]
 

@@ -4,9 +4,9 @@ defmodule ICalendar.RFC6868 do
 
   " \n and ^ have to be unescaped.
   """
-  @spec unescape(String.t) :: String.t
+  @spec unescape(String.t()) :: String.t()
   def unescape(string) do
-    Regex.replace(~r/\^['n^]/, string, fn 
+    Regex.replace(~r/\^['n^]/, string, fn
       "^'" -> ~s(")
       "^n" -> "\n"
       "^^" -> "^"
@@ -18,9 +18,9 @@ defmodule ICalendar.RFC6868 do
 
   " \n and ^ have to be escaped.
   """
-  @spec escape(String.t) :: String.t
+  @spec escape(String.t()) :: String.t()
   def escape(string) do
-    Regex.replace(~r/["\n^]/, string, fn 
+    Regex.replace(~r/["\n^]/, string, fn
       ~s(") -> "^'"
       "\n" -> "^n"
       "^" -> "^^"
