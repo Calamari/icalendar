@@ -1,25 +1,24 @@
-defmodule VObject.Mixfile do
+defmodule ICalendar.Mixfile do
   use Mix.Project
 
-  @version "0.5.0"
+  @version "0.1.0"
 
   def project do
     [
-      app: :vobject,
+      app: :icalendar,
       version: @version,
       elixir: "~> 1.3",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
-
-      name: "vobject",
-      source_url: "https://github.com/polyfox/vobject",
-      description: "Parse and manipulate iCalendar (RFC5545) and vCard objects (RFC6350)",
+      name: "iCalendar",
+      source_url: "https://github.com/calamari/icalendar",
+      description: "Parse and manipulate iCalendar (RFC5545)",
       package: [
-        maintainers: ["Blaž Hrastnik"],
+        maintainers: ["Georg Tavonius"],
         licenses: ["MIT"],
-        links: %{ "GitHub" => "https://github.com/polyfox/vobject" },
-      ],
+        links: %{"GitHub" => "https://github.com/calamari/icalendar"}
+      ]
     ]
   end
 
@@ -46,8 +45,7 @@ defmodule VObject.Mixfile do
       # Timezones, period parsing, intervals
       {:timex, "~> 3.0"},
       {:calendar, "~> 0.17.2"},
-
-      {:eflame, "~> 1.0.1", only: :dev},
+      {:eflame, "~> 1.0.1", only: :dev}
     ]
   end
 end

@@ -1,4 +1,4 @@
-# VObject
+# ICalendar
 
 Parse and manipulate iCalendar ([RFC5545](https://tools.ietf.org/html/rfc5545)) and vCard objects (RFC6350). Parameter escaping follows ([RFC6868](https://tools.ietf.org/html/rfc6868)).
 

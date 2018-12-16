@@ -3,7 +3,7 @@ defmodule ICalendar do
   Generating ICalendars
   """
 
-  @prodid "-//Polyfox//vObject 0.5.0//EN"
+  @prodid "-//Calamari//iCalendar 0.1.0//EN"
 
   @spec new() :: %{:__type__ => {atom, map}, optional(atom) => {term, map}}
   def new do
